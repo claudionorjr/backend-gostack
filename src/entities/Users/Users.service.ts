@@ -5,6 +5,7 @@ import fs from 'fs';
 import usersRepository from './Users.repository';
 import User from './Users.model';
 import uploadConfig from '../../config/upload';
+import AppError from '../../errors/AppError';
 
 interface Request {
   name: string;
@@ -30,7 +31,7 @@ class UsersService {
     });
 
     if (checkUserExists) {
-      throw new Error('Email Address already used.');
+      throw new AppError('Email Address already used.');
     }
 
     const hashedPassword = await hash(password, 8);
@@ -53,7 +54,7 @@ class UsersService {
     const user = await this.usersRepository.findOne(user_id);
 
     if (!user) {
-      throw new Error('Only authenticated users can change avatar.');
+      throw new AppError('Only authenticated users can change avatar.', 401);
     }
 
     if (user.avatar) {

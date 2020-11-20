@@ -16,20 +16,16 @@ route.get('/', async (request, response) => {
 });
 
 route.post('/', async (request, response) => {
-  try {
-    const { provider_id, date } = request.body;
+  const { provider_id, date } = request.body;
 
-    const parsedDate = parseISO(date);
-    const appointmentsService = new AppointmentsService();
-    const appointment = await appointmentsService.createAppointment({
-      provider_id,
-      date: parsedDate,
-    });
+  const parsedDate = parseISO(date);
+  const appointmentsService = new AppointmentsService();
+  const appointment = await appointmentsService.createAppointment({
+    provider_id,
+    date: parsedDate,
+  });
 
-    return response.status(200).json(appointment);
-  } catch (err) {
-    return response.status(400).json({ error: err.message });
-  }
+  return response.status(200).json(appointment);
 });
 
 export default route;
